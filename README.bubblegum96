@@ -1,0 +1,46 @@
+1. Directories
+   doc/		Reference documentation.
+   build/	Build scripts.
+   tools/	The tools, include common and vendor specific.
+   u-boot/	The source code of u-boot.
+   linux/	The source code of linux kernel.
+
+2. Download source code
+   mkdir xprj
+   cd xprj
+   git clone https://github.com/wowotechX/doc.git
+   git clone https://github.com/wowotechX/build.git
+   git clone https://github.com/wowotechX/tools.git
+   git clone https://github.com/wowotechX/u-boot.git
+   git clone https://github.com/wowotechX/linux.git
+
+3. Download toolchain compilers
+   cd ./build
+   make env_prepare
+
+   Then the build script will download the suitable toolchain
+   according to your board(assigned by config.mk) and your host
+   environment.
+
+   NOTE: mostly, you just need do it once.
+
+4. Preparation building
+   cd ./build
+   make libusb
+   make dfu
+
+   NOTE: mostly, you just need do it once.
+
+5. Build u-boot, linux kernel, etc.
+   cd ./build
+   make u-boot
+   make kernel
+
+6. Download and run u-boot through USB DFU tools.
+   a. press ADFU key, and reboot the board to ADFU mode.
+   b. press ADFU key, download and run SPL, util it enter ADFU mode again
+      sudo ../tools/dfu/dfu bubblegum 0xe406b200 ../tools/actions/splboot.bin 1
+   c. release ADFU key, download and run u-boot.
+      sudo ../tools/dfu/dfu bubblegum 0x11000000 out/u-boot/u-boot-dtb.bin 1
+
+   You will see the command line in UART console. Enjoy it!
