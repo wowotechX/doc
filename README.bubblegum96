@@ -24,19 +24,39 @@
 
    NOTE: mostly, you just need do it once.
 
-4. Preparation building
+4. Install neccessary package(Based Ubuntu)
+   # udev
+   sudo apt-get install libudev-dev
+
+   # update dtc tools
+   sudo apt-get remove device-tree-compiler
+
+   sudo apt-get install device-tree-compiler
+   # if not work, then build it from source code
+
+   sudo apt-get install flex
+   sudo apt-get install bison
+   git clone https://kernel.org/pub/scm/utils/dtc/dtc.git -b 1.4.1
+
+   cd dtc
+   make
+   make install
+
+   export PATH=$HOME/bin/:$PATH
+
+5. Preparation building
    cd ./build
    make libusb
    make dfu
 
    NOTE: mostly, you just need do it once.
 
-5. Build u-boot, linux kernel, etc.
+6. Build u-boot, linux kernel, etc.
    cd ./build
    make u-boot
    make kernel
 
-6. Download and run u-boot through USB DFU tools.
+7. Download and run u-boot through USB DFU tools.
    a. press ADFU key, and reboot the board to ADFU mode.
    b. press ADFU key, download and run SPL, util it enter ADFU mode again
       sudo ../tools/dfu/dfu bubblegum 0xe406b200 ../tools/actions/splboot.bin 1
@@ -44,3 +64,11 @@
       sudo ../tools/dfu/dfu bubblegum 0x11000000 out/u-boot/u-boot-dtb.bin 1
 
    You will see the command line in UART console. Enjoy it!
+
+   Known issues:
+      These operations cannot work on "Ubuntu 64bit" host. Instead, you should
+      do another more operations:
+      >. Connect the bubblegum96 board to PC using USB cable.
+      a. press ADFU key, and reboot the board to ADFU mode.
+      >. Disconnect the USB cable, then re-connect it.
+      Okay, do what you should do according to the upper steps!!
