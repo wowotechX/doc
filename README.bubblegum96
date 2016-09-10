@@ -51,10 +51,11 @@
 
    NOTE: mostly, you just need do it once.
 
-6. Build u-boot, linux kernel, etc.
+6. Build u-boot, linux kernel, uImage, etc.
    cd ./build
    make u-boot
    make kernel
+   make uImage
 
 7. Download and run u-boot through USB DFU tools.
    a. press ADFU key, and reboot the board to ADFU mode.
@@ -72,3 +73,14 @@
       a. press ADFU key, and reboot the board to ADFU mode.
       >. Disconnect the USB cable, then re-connect it.
       Okay, do what you should do according to the upper steps!!
+
+8. Boot Linux kernel
+  a. press ADFU key, and reboot the board to ADFU mode.
+  b. press ADFU key, download and run SPL, util it enter ADFU mode again
+     sudo ../tools/dfu/dfu bubblegum 0xe406b200 ../tools/actions/splboot.bin 1
+  c. release ADFU key, download FIT uImage
+     sudo ../tools/dfu/dfu bubblegum 0x6400000 ./out/xprj_uImage.itb 0
+  d. download and run u-boot
+     sudo ../tools/dfu/dfu bubblegum 0x11000000 out/u-boot/u-boot-dtb.bin 1
+  e. Boot linux kernel in U-boot command line
+     bootm 0x6400000
