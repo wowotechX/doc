@@ -51,18 +51,20 @@
 
    NOTE: mostly, you just need do it once.
 
-6. Build u-boot, linux kernel, uImage, etc.
+6. Build u-boot, linux kernel, busybox, initramfs, uImage, etc.
    cd ./build
    make u-boot
    make kernel
+   make busybox
+   make initramfs
    make uImage
 
 7. Download and run u-boot through USB DFU tools.
    a. press ADFU key, and reboot the board to ADFU mode.
    b. press ADFU key, download and run SPL, util it enter ADFU mode again
-      sudo ../tools/dfu/dfu bubblegum 0xe406b200 ../tools/actions/splboot.bin 1
+      make spl-run    # at ./build directory, a help command
    c. release ADFU key, download and run u-boot.
-      sudo ../tools/dfu/dfu bubblegum 0x11000000 out/u-boot/u-boot-dtb.bin 1
+      make uboot-run  # at ./build directory, a help command
 
    You will see the command line in UART console. Enjoy it!
 
@@ -74,13 +76,12 @@
       >. Disconnect the USB cable, then re-connect it.
       Okay, do what you should do according to the upper steps!!
 
-8. Boot Linux kernel
+8. Boot Linux kernel(stand alone, or with initramfs)
   a. press ADFU key, and reboot the board to ADFU mode.
   b. press ADFU key, download and run SPL, util it enter ADFU mode again
-     sudo ../tools/dfu/dfu bubblegum 0xe406b200 ../tools/actions/splboot.bin 1
-  c. release ADFU key, download FIT uImage
-     sudo ../tools/dfu/dfu bubblegum 0x6400000 ./out/xprj_uImage.itb 0
-  d. download and run u-boot
-     sudo ../tools/dfu/dfu bubblegum 0x11000000 out/u-boot/u-boot-dtb.bin 1
-  e. Boot linux kernel in U-boot command line
-     bootm 0x6400000
+     make spl-run    # at ./build directory, a help command
+  c. release ADFU key, download and run FIT uImage
+     make kernel-run # at ./build directory, a help command
+
+  If with initramfs, you will see the command line based on busybox
+  in UART console. Enjoy it!
